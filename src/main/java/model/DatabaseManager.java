@@ -6,7 +6,7 @@ package model;
 public interface DatabaseManager {
     int getTableSize(String tableName);
 
-    String getTablesNames();
+    String[] getTablesNames();
 
     void connect(String dbName, String userName, String password);
 

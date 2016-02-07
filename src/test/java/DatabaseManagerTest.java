@@ -22,8 +22,8 @@ public abstract class DatabaseManagerTest {
 
     @Test
     public void testGetAllTableNames() {
-        String tableNames = manager.getTablesNames();
-        assertEquals("[user]", tableNames);
+        String[] tableNames = manager.getTablesNames();
+        assertEquals("[user]", Arrays.toString(tableNames));
     }
 
     @Test

@@ -22,22 +22,25 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public String getTablesNames(){
+    public String[] getTablesNames(){
         try {
-            String result = "[";
+           // String result = "[";
+            String[] result = new String[1000];
             String[] types = {"TABLE"};
             DatabaseMetaData md = connection.getMetaData();
             ResultSet rs = md.getTables(null, "public", "%", types);
+            int index = 0;
             while (rs.next()) {
-                result += rs.getString(3) + ", ";
+                result[index++] = rs.getString(3);
             }
-            result = result.substring(0, result.length() - 2);
-            result = result + "]";
+            result = Arrays.copyOf(result, index);
+           /* result = result.substring(0, result.length() - 2);
+            result = result + "]";*/
             rs.close();
             return result;
         } catch(SQLException e){
             e.printStackTrace();
-            return "";
+            return new String[0];
         }
 
     }
@@ -48,15 +51,16 @@ public class JDBCDatabaseManager implements DatabaseManager {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return;
+            throw new RuntimeException("Please add JDBC jar to project", e);
         }
 
         try {
             connection = DriverManager.getConnection(
                     "jdbc:postgresql://127.0.0.1:5432/" + dbName, userName, password);
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            connection = null;
+            throw new RuntimeException(String.format("Can't get connection for model: %s user:%s",
+                    dbName, userName), e);
         }
     }
 

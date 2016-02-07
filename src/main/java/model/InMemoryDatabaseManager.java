@@ -23,8 +23,9 @@ public class InMemoryDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public String getTablesNames() {
-        return "[" + TABLE_NAME + "]";
+    public String[] getTablesNames() {
+
+        return new String[]{ TABLE_NAME };
     }
 
     @Override

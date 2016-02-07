@@ -2,17 +2,17 @@ package model;
 
 public class DataSet {
     private Data data[];
-    private int index = 0;
+    private int freeIndex = 0;
 
     static class Data{
-        private String nameColumn;
-        private Object valueColumn;
 
+        private String nameColumn;
+
+        private Object valueColumn;
         Data(String nameColumn, Object valueColumn ){
             this.nameColumn = nameColumn;
             this.valueColumn = valueColumn;
         }
-
         public String getNameColumn(){
             return nameColumn;
         }
@@ -20,31 +20,52 @@ public class DataSet {
         public Object getValueColumn(){
             return valueColumn;
         }
+
     }
 
     public DataSet(){
         data = new Data[100];
 
     }
-
     public void put(String nameColumn, Object valueColumn){
-        data[index++] = new Data(nameColumn, valueColumn);
+        for (int index = 0; index < freeIndex; index++) {
+            if (data[index].nameColumn.equals(nameColumn)) {
+                data[index].valueColumn = valueColumn;
+                return;
+            }
+        }
+        data[freeIndex++] = new Data(nameColumn, valueColumn);
     }
 
     public String[] getColumnsNames(){
-        String result[] = new String[index];
-        for (int i = 0; i < index; i++) {
+        String result[] = new String[freeIndex];
+        for (int i = 0; i < freeIndex; i++) {
             result[i] = data[i].getNameColumn();
         }
         return result;
     }
 
     public Object[] getColumnsValues(){
-        Object result[] = new Object[index];
-        for (int i = 0; i < index; i++) {
+        Object result[] = new Object[freeIndex];
+        for (int i = 0; i < freeIndex; i++) {
             result[i] = data[i].getValueColumn();
         }
         return result;
+    }
+
+    public Object get(String name) {
+        for (int i = 0; i < freeIndex; i++) {
+            if (data[i].getNameColumn().equals(name))
+                return data[i].getValueColumn();
+        }
+        return null;
+    }
+
+    public void updateFrom(DataSet dataSet) {
+        for (int index = 0; index < dataSet.freeIndex; index++) {
+            Data data = dataSet.data[index];
+            put(data.nameColumn, data.valueColumn);
+        }
     }
 
     @Override
@@ -52,7 +73,7 @@ public class DataSet {
         String []columnsNames = getColumnsNames();
         Object []columnsValues = getColumnsValues();
         String result = "model.DataSet:";
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i < freeIndex; i++) {
             result += columnsNames[i] + " = " + columnsValues[i] + ", ";
         }
         result = result.substring(0, result.length() - 2) + "\n";

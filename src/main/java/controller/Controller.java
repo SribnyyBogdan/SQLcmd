@@ -21,10 +21,25 @@ public class Controller {
 
     private void connectToDB(){
         console.write("It's a program SQLcmd!");
-        console.write("Enter, please, database name, user name and password in the following format database_name|user_name|password:");
         while(true){
+            console.write("Enter, please, database name, user name and password" +
+                    " in the following format: database_name|user_name|password:");
+            try{
+                String string = console.read();
+                String[] result = string.split("\\|");
+                String dbName = result[0];
+                String userName = result[1];
+                String password = result[2];
+                dbManager.connect(dbName, userName, password);
+                break;
+
+            }catch(Exception e){
+                console.write("Cause of failure:" + e.getMessage());
+                console.write("Try again!");
+            }
 
         }
+        //console.write("Успех!");
 
     }
 
@@ -35,9 +50,7 @@ public class Controller {
         commandMap.put("list", new ListCommand(commandStore));
         commandMap.put("quit", new QuitCommand(commandStore));
         commandMap.put("help", new HelpCommand(commandStore));
-        while(true){
-
-        }
+        connectToDB();
     }
 
 

@@ -1,5 +1,6 @@
 import model.DataSet;
 import model.DatabaseManager;
+import model.InMemoryDatabaseManager;
 import model.JDBCDatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,20 +10,20 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 
-public class TestSQLcmd {
+public abstract class DatabaseManagerTest {
 
     private DatabaseManager manager;
 
     @Before
     public void setup() {
-        manager = new JDBCDatabaseManager();
+        manager = getDatabaseManager();
         manager.connect("test", "postgres", "1605");
     }
 
     @Test
     public void testGetAllTableNames() {
         String tableNames = manager.getTablesNames();
-        assertEquals("[test, user]", tableNames);
+        assertEquals("[user]", tableNames);
     }
 
     @Test
@@ -33,9 +34,9 @@ public class TestSQLcmd {
 
         // when
         DataSet input = new DataSet();
-        input.put("id", 13);
         input.put("name", "Stiven");
         input.put("password", "pass");
+        input.put("id", 13);
         manager.insert(tableName, input);
 
         // then
@@ -54,15 +55,11 @@ public class TestSQLcmd {
         String tableName = "user";
 
         DataSet input = new DataSet();
-        input.put("id", 13);
         input.put("name", "Stiven");
         input.put("password", "pass");
-        DataSet input1 = new DataSet();
-        input1.put("id", 11);
-        input1.put("name", "Stiven");
-        input1.put("password", "pass");
+        input.put("id", 13);
         manager.insert(tableName, input);
-        manager.insert(tableName, input1);
+
 
 
         // when
@@ -73,10 +70,11 @@ public class TestSQLcmd {
 
         // then
         DataSet[] users = manager.getTableData("user");
-        assertEquals(2, users.length);
-
-        DataSet user = users[1];
+        assertEquals(1, users.length);
+        DataSet user = users[0];
         assertEquals("[name, password, id]", Arrays.toString(user.getColumnsNames()));
         assertEquals("[Pup, pass2, 13]", Arrays.toString(user.getColumnsValues()));
     }
+
+    public abstract DatabaseManager getDatabaseManager();
 }

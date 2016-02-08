@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Connection;
 import java.util.Arrays;
 
 /**
@@ -10,7 +11,7 @@ public class InMemoryDatabaseManager implements DatabaseManager {
     private int freeIndex = 0;
     public static final String TABLE_NAME = "user";
 
-    private void validateTable(String tableName){
+    protected void validateTable(String tableName){
         if (!tableName.equals("user")){
             throw new UnsupportedOperationException("Only for 'user' table, but you try to work with:" + tableName);
         }
@@ -69,5 +70,10 @@ public class InMemoryDatabaseManager implements DatabaseManager {
             }
         }
 
+    }
+
+    @Override
+    public Connection getConnection() {
+        return null;
     }
 }

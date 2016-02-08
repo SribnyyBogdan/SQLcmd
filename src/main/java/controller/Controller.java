@@ -20,7 +20,7 @@ public class Controller {
         this.inputOutput = inputOutput;
     }
 
-    private void connectToDB(){
+    /*private void connectToDB(){
         inputOutput.write("It's a program SQLcmd!");
         inputOutput.write("Enter, please, database name, user name and password" +
                 " in the following format: database_name|user_name|password:");
@@ -51,7 +51,7 @@ public class Controller {
         }
         inputOutput.write("Cause of failure:" + message);
         inputOutput.write("Try again!");
-    }
+    }*/
 
 
     public void run(){
@@ -60,7 +60,8 @@ public class Controller {
         commandMap.put("quit", new QuitCommand(commandStore));
         commandMap.put("help", new HelpCommand(commandStore));
         commandMap.put("find", new FindCommand(commandStore));
-        connectToDB();
+        commandMap.put("connect", new ConnectCommand(commandStore));
+        inputOutput.write("It's a program SQLcmd!");
         while(true) {
             inputOutput.write("Enter the command or help:");
             String command = inputOutput.read();

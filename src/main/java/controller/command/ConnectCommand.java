@@ -1,19 +1,19 @@
 package controller.command;
 
 /**
- * Created by Богдан on 07.02.2016.
+ * Created by Богдан on 08.02.2016.
  */
-public class FindCommand implements Command {
+public class ConnectCommand implements Command {
     private CommandStore commandStore;
 
-    public FindCommand(CommandStore commandStore){
+    public ConnectCommand(CommandStore commandStore){
 
         this.commandStore = commandStore;
     }
 
     @Override
     public void execute() {
-        commandStore.find();
+        commandStore.connect();
 
     }
 }

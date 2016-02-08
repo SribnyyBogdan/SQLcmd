@@ -12,7 +12,6 @@ public class QuitCommand implements Command {
         this.commandStore = commandStore;
     }
 
-
     @Override
     public void execute() {
         commandStore.quit();

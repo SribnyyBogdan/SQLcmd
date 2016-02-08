@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Connection;
+
 /**
  * Created by Богдан on 11.01.2016.
  */
@@ -19,4 +21,6 @@ public interface DatabaseManager {
     void insert(String tableName, DataSet dataSet);
 
     void update(String tableName, int id, DataSet dataSet);
+
+    Connection getConnection();
 }

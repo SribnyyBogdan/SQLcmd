@@ -12,7 +12,6 @@ public class ListCommand implements Command {
         this.commandStore = commandStore;
     }
 
-
     @Override
     public void execute() {
         commandStore.list();

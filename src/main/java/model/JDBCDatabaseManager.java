@@ -88,17 +88,27 @@ public class JDBCDatabaseManager implements DatabaseManager {
     @Override
     public DataSet[] getTableData(String tableName){
         try {
+            boolean flag = false;
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM public." + tableName);
             ResultSetMetaData rsmd = rs.getMetaData();
             DataSet dataSet[] = new DataSet[getTableSize(tableName)];
             int index = 0;
             while (rs.next()) {
+                flag = true;
                 DataSet dataRow = new DataSet();
                 for (int i = 1; i <= getCountColumn(tableName); i++) {
                     dataRow.put(rsmd.getColumnName(i), rs.getString(i));
                 }
                 dataSet[index++] = dataRow;
+            }
+            if (!flag){
+                DataSet dataRow = new DataSet();
+                for (int i = 1; i <= getCountColumn(tableName); i++) {
+                    dataRow.put(rsmd.getColumnName(i), "");
+                }
+                DataSet dataSetWithoutData[] = new DataSet[]{dataRow};
+                return dataSetWithoutData;
             }
             rs.close();
             stmt.close();

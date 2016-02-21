@@ -1,5 +1,7 @@
 package controller;
 
+
+
 import controller.command.*;
 import model.DatabaseManager;
 import view.Console;
@@ -61,17 +63,23 @@ public class Controller {
         commandMap.put("help", new HelpCommand(commandStore));
         commandMap.put("find", new FindCommand(commandStore));
         commandMap.put("connect", new ConnectCommand(commandStore));
+        commandMap.put("clear", new ClearCommand(commandStore));
+        commandMap.put("insert", new InsertCommand(commandStore));
         inputOutput.write("It's a program SQLcmd!");
-        while(true) {
-            inputOutput.write("Enter the command or help:");
-            String command = inputOutput.read();
-            if (commandMap.get(command) != null){
-                commandMap.get(command).execute();
-            }else{
-                inputOutput.write("Does not exist command");
-                inputOutput.write("Try again!");
+        try {
+            while (true) {
+                inputOutput.write("Enter the command or help:");
+                String command = inputOutput.read();
+                if (commandMap.get(command) != null) {
+                    commandMap.get(command).execute();
+                } else {
+                    inputOutput.write("Does not exist command");
+                    inputOutput.write("Try again!");
 
+                }
             }
+        }catch(QuitException e){
+
         }
     }
 

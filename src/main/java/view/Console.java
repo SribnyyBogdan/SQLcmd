@@ -4,6 +4,10 @@ package view;
 import java.util.Scanner;
 
 public class Console implements InputOutput {
+    private Scanner scanner;
+    public Console(){
+        scanner = new Scanner(System.in);
+    }
     @Override
     public void write(String message) {
         System.out.println(message);
@@ -13,7 +17,6 @@ public class Console implements InputOutput {
     @Override
     public String read() {
         String result = "";
-        Scanner scanner = new Scanner(System.in);
         result = scanner.nextLine();
         return result;
     }
